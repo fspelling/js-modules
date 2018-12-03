@@ -1,4 +1,8 @@
+var webpack = require('webpack');
+var nodeENV = process.nodeENV || 'production';
+
 module.exports = {
+    devtool: 'source-map',
     entry: './app.js',
     output: {
         filename: 'build.js'
@@ -14,5 +18,15 @@ module.exports = {
                 }
             }
         ]
-    }
+    },
+    plugins: [
+        new webpack.optimize.UglifyJsPlugin({
+            compress: { warnings: false },
+            output: { comments: false },
+            sourceMap: true
+        }),
+        new webpack.DefinePlugin({
+            'process.env': { NODE_ENV: JSON.stringify(nodeENV) }
+        })
+    ]
 };
